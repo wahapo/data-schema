@@ -222,6 +222,7 @@ describe('config regex', () => {
     describe('environment', () => {
         it('checks good env names', () => {
             assert.isTrue(config.regex.ENV_NAME.test('OKAY_YES11'));
+            assert.isTrue(config.regex.ENV_NAME.test('okay_YES11'));
         });
 
         it('fails on bad job names', () => {

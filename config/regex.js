@@ -60,9 +60,9 @@ module.exports = {
     // Can be ~tag or ~tag:branchName
     TAG_TRIGGER: /^~tag(:.+)?$/,
     // IEEE Std 1003.1-2001
-    // Environment names contain uppercase letters, digits, and underscore
+    // Environment names must start with an alpha character(A-Z,a-z) or underscore(_) and can only contain A-Z,a-z,0-9,_
     // They cannot start with digits
-    ENV_NAME: /^[A-Z_][A-Z0-9_]*$/,
+    ENV_NAME: /^[a-zA-Z_][\w]*$/,
     // Repo checkout url. For example: https://github.com/screwdriver-cd/data-schema.git#branchName or git@github.com:screwdriver-cd/data-schema.git
     // eslint-disable-next-line max-len
     CHECKOUT_URL: /^(?:(?:https:\/\/(?:[^@/:\s]+@)?)|git@)+([^/:\s]+)(?:\/|:)([^/:\s]+)\/([^\s]+?)(?:\.git)?(#[^\s]+)?$/,
