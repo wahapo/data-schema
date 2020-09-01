@@ -4,7 +4,6 @@ const Annotations = require('./annotations');
 const Joi = require('joi');
 const Regex = require('./regex');
 const sdCron = require('./cronExpression');
-
 const SPECIFIC_BRANCH_POS = 4;
 
 // ref. https://github.com/sideway/joi/blob/v17.1.1/API.md#extendextensions
@@ -139,6 +138,16 @@ const SCHEMA_SOURCEPATHS = Joi.alternatives().try(
     SCHEMA_SOURCEPATH
 );
 const SCHEMA_CACHE = Joi.boolean().optional();
+const SCHEMA_RETRY_OBJECT = Joi.object()
+    .keys({
+        condition: Joi.alternatives().try(Joi.string(), Joi.object().regex()).optional(),
+        maxRetry: Joi.number().integer().positive().default(1),
+        interval: Joi.number().integer().positive().unit('seconds')
+            .default(0),
+        environment: SCHEMA_ENVIRONMENT
+    });
+const SCHEMA_RETRY = Joi.alternatives().try(SCHEMA_RETRY_OBJECT, Joi.boolean()).default(false);
+
 const SCHEMA_JOB = Joi.object()
     .keys({
         annotations: Annotations.annotations,
@@ -155,7 +164,8 @@ const SCHEMA_JOB = Joi.object()
         steps: SCHEMA_STEPS,
         template: SCHEMA_TEMPLATE,
         templateId: SCHEMA_TEMPLATEID,
-        cache: SCHEMA_CACHE
+        cache: SCHEMA_CACHE,
+        retry: SCHEMA_RETRY
     })
     .default({});
 const SCHEMA_JOB_NO_DUP_STEPS = Joi.object()
@@ -173,7 +183,8 @@ const SCHEMA_JOB_NO_DUP_STEPS = Joi.object()
         sourcePaths: SCHEMA_SOURCEPATHS,
         steps: SCHEMA_STEPS_NO_DUPS,
         template: SCHEMA_TEMPLATE,
-        cache: SCHEMA_CACHE
+        cache: SCHEMA_CACHE,
+        retry: SCHEMA_RETRY
     })
     .default({});
 

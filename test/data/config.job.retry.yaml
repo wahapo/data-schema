@@ -1,0 +1,18 @@
+environment:
+    NODE_ENV: production
+matrix:
+    NODE_VERSION:
+        - 4
+        - 5
+        - 6
+image: node:{{NODE_VERSION}}
+retry:
+    condition: $GIT_SHALLOW_CLONE == true
+    maxRetry: 2
+    interval: 20
+    environment:
+        GIT_SHALLOW_CLONE: false
+steps:
+    - init: npm install
+    - test: npm test
+    - publish: npm publish

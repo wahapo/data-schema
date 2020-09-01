@@ -116,6 +116,18 @@ describe('config job', () => {
         });
     });
 
+    describe('retry', () => {
+        it('validates job.retry', () => {
+            console.log(config.job.job.retry);
+            assert.isNull(validate('config.job.retry.yaml', config.job.job).error);
+        });
+
+        it('validates job.retry object', () => {
+            console.log(config.job.job.retry);
+            assert.isNull(validate('config.job.retry.object.yaml', config.job.job).error);
+        });
+    });
+
     describe('template', () => {
         it('validates good template', () => {
             assert.isNull(validate('config.job.template.good.yaml', config.job.job).error);
